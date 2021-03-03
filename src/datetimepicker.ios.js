@@ -53,6 +53,8 @@ export default function Picker({
   timeZoneOffsetInMinutes,
   textColor,
   onChange,
+  onFocus,
+  onBlur,
   ...otherProps
 }: IOSNativeProps) {
   const [heightStyle, setHeightStyle] = useState(undefined);
@@ -120,8 +122,14 @@ export default function Picker({
       timeZoneOffsetInMinutes={timeZoneOffsetInMinutes}
       onChange={_onChange}
       textColor={textColor}
-      onStartShouldSetResponder={() => true}
-      onResponderTerminationRequest={() => false}
+      onStartShouldSetResponder={() => {
+        if (onFocus) onFocus();
+        return true;
+      }}
+      onResponderTerminationRequest={() => {
+        if (onBlur) onBlur();
+        return false;
+      }}
       displayIOS={display}
     />
   );
